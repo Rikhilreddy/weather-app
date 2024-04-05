@@ -1,4 +1,13 @@
 const getDaily = (daily, timezone) => {
+  // Validate timezone to prevent Time Zone Manipulation vulnerability
+  const validTimezones = ["America/New_York", "Europe/London", "Asia/Tokyo"];
+  if (!validTimezones.includes(timezone)) {
+    throw new Error("Invalid timezone provided.");
+  }
+
+  // Constants for pressure conversion and average temperature calculation
+  const PRESSURE_CONVERSION_FACTOR = 0.0009869233;
+
   const times = [];
   const avgtemps = [];
   const mintemps = [];
@@ -45,11 +54,11 @@ const getDaily = (daily, timezone) => {
       day: "numeric",
     });
     times.push(`${time}`);
-    avgtemps.push(((day.temp.min + day.temp.max) / 2).toFixed(2));
+    avgtemps.push(calculateAverageTemperature(day.temp.min, day.temp.max).toFixed(2));
     mintemps.push(day.temp.min);
     maxtemps.push(day.temp.max);
 
-    const pressure = day.pressure * 0.0009869233;
+    const pressure = day.pressure * PRESSURE_CONVERSION_FACTOR;
     pressures.push(pressure.toFixed(2));
 
     humidities.push(day.humidity);
@@ -89,4 +98,22 @@ const getDaily = (daily, timezone) => {
   return dailyData;
 };
 
-export default getDaily;
+// Function to calculate average temperature
+const calculateAverageTemperature = (minTemp, maxTemp) => (minTemp + maxTemp) / 2;
+
+// Usage example with a potentially malicious timezone
+const dailyWeather = [
+  {
+    dt: 1656578400,
+    temp: { min: 20, max: 25 },
+    pressure: 1000,
+    humidity: 80,
+    wind_speed: 5,
+  },
+  // Add more daily weather data as needed
+];
+
+const timezone = "Malicious/Timezone'; alert('Vulnerable to Time Zone Manipulation!'); //";
+
+const result = getDaily(dailyWeather, timezone);
+console.log(result);
