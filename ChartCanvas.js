@@ -1,30 +1,8 @@
 import React from "react";
-
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Tooltip,
-  Legend,
-  BarElement,
-  LineController,
-  BarController,
-} from "chart.js";
 import { Chart } from "react-chartjs-2";
+import { LinearScale, CategoryScale, Legend, Tooltip } from "chart.js";
 
-ChartJS.register(
-  LinearScale,
-  CategoryScale,
-  BarElement,
-  PointElement,
-  LineElement,
-  Legend,
-  Tooltip,
-  LineController,
-  BarController
-);
+Chart.register(LinearScale, CategoryScale, Legend, Tooltip);
 
 function ChartCanvas({ data, xtitle, title, refProp }) {
   const options = {
@@ -75,25 +53,21 @@ function ChartCanvas({ data, xtitle, title, refProp }) {
               </div>
             </div>
             <div className="p-4 flex-auto">
-              <div className="relative h-350-px">
+              <div className="relative">
                 {data.labels ? (
                   <Chart
                     style={{
                       display: "block",
-                      height: "350px",
-                      width: "791px",
+                      height: "100%",
+                      width: "100%",
                     }}
-                    width="1582"
-                    height="700"
                     options={options}
                     data={data}
                   />
                 ) : (
-                  <div className="skel">
-                    <div className="relative top-2/4 left-2/4 -translate-x-2/4 -translate-y-2/4 w-max">
-                      <div className="loading-spinner mx-auto"></div>
-                      <h3>Loading Chart...</h3>
-                    </div>
+                  <div className="loading-container">
+                    <div className="loading-spinner"></div>
+                    <h3>Loading Chart...</h3>
                   </div>
                 )}
               </div>
