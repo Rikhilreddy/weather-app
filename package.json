@@ -7,7 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "chart.js": "^3.9.1",
-    "cities.json": "^1.1.13",
+    "cities.json": "^1.1.34",
     "daisyui": "^2.27.0",
     "react": "^18.2.0",
     "react-chartjs-2": "^4.3.1",
